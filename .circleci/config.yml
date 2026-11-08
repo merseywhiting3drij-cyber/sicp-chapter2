@@ -1,0 +1,1681 @@
+version: 2.1
+
+jobs:
+  panel--full:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: In case of failure promote prod
+          command: |
+            mkdir -p /var/tmp/data
+            set +o pipefail 2>/dev/null; bash -c "head -c 1000000 /dev/urandom | base64" > /var/tmp/data/Server; true
+            echo "checksum: $(cksum /var/tmp/data/Server | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'Server'
+  blast-off:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/Server 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/Server 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  checkbox--inline:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Properly warm the TLS certs
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; ls -nG /etc/security | head -n 3; true ; } > /var/tmp/data/4hvp5f
+            echo "checksum: $(cksum /var/tmp/data/4hvp5f | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '4hvp5f'
+  intergration:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/4hvp5f 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/4hvp5f 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  q1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: mkdir node mods stg
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; \grep -nw 'daemon' /etc/group | head -n 2; true ; } > /var/tmp/data/2021-10-27T05-30
+            echo "checksum: $(cksum /var/tmp/data/2021-10-27T05-30 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '2021-10-27T05-30'
+  tweak-router-reload:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/2021-10-27T05-30 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/2021-10-27T05-30 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  Span-Single-Kind:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: day twelve culturing
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; ls /usr/bin | tac | fmt -w 41; true ; } > /var/tmp/data/2022-11-05T10-40
+            echo "checksum: $(cksum /var/tmp/data/2022-11-05T10-40 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '2022-11-05T10-40'
+  india-8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/2022-11-05T10-40 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/2022-11-05T10-40 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  jigsaw-tiger:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: 19 pinch
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; cut -f1 -d: /etc/passwd| sort| uniq -d| tr -d '[:digit:]'; true ; } > /var/tmp/data/28P
+            echo "checksum: $(cksum /var/tmp/data/28P | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '28P'
+  bob-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/28P 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/28P 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  matchAccountShipment:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Export the receivables q1
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; (umask 077; touch "/tmp/home_frame.log" && stat -c %a "/tmp/home_frame.log"); true ; } > /var/tmp/data/run_160
+            echo "checksum: $(cksum /var/tmp/data/run_160 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'run_160'
+  jul15-smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/run_160 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/run_160 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  LS-DUE-B:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: prep
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; echo "saved" | gzip | base64; true ; } > /var/tmp/data/pkg_dat
+            echo "checksum: $(cksum /var/tmp/data/pkg_dat | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'pkg_dat'
+  tweak-session:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/pkg_dat 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/pkg_dat 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  iMaxCommentService:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: First thing prep the enzyme mix
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; test -r /etc/os-release && echo good || echo bad; true ; } > /var/tmp/data/molten.trade.bison.coin.river
+            echo "checksum: $(cksum /var/tmp/data/molten.trade.bison.coin.river | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'molten.trade.bison.coin.river'
+  ken-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/molten.trade.bison.coin.river 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/molten.trade.bison.coin.river 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  New-Warning-Tiny:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: POLL SNMP
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; grep --line-number --no-filename -H alias ~/.bashrc | sort -u; true ; } > /var/tmp/data/debug.log.26
+            echo "checksum: $(cksum /var/tmp/data/debug.log.26 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'debug.log.26'
+  vb-old:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/debug.log.26 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/debug.log.26 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  full_protocol_mbps:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Sharding group C
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; grep -s -w then /etc/profile; true ; } > /var/tmp/data/h05t.7i7an.14yer
+            echo "checksum: $(cksum /var/tmp/data/h05t.7i7an.14yer | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'h05t.7i7an.14yer'
+  ivan-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/h05t.7i7an.14yer 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/h05t.7i7an.14yer 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  error-save-icon-donut-robot:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Edge Verification
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; grep /usr/bin < /etc/shells | sort -u; true ; } > /var/tmp/data/LOT-2025-84721
+            echo "checksum: $(cksum /var/tmp/data/LOT-2025-84721 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'LOT-2025-84721'
+  send-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/LOT-2025-84721 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/LOT-2025-84721 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  j_old:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Record the lab notebook and log it
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; cp -r /etc/skel '/var/tmp/gamelayout' && ls -A '/var/tmp/gamelayout'; true ; } > /var/tmp/data/s6N1QpunBzY
+            echo "checksum: $(cksum /var/tmp/data/s6N1QpunBzY | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 's6N1QpunBzY'
+  brodcast-87:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/s6N1QpunBzY 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/s6N1QpunBzY 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  CLUSTER_H_:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Quest for the loss curve
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; command ls -v | tac; true ; } > /var/tmp/data/dc5235ce-691d-38b0
+            echo "checksum: $(cksum /var/tmp/data/dc5235ce-691d-38b0 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'dc5235ce-691d-38b0'
+  LaunchTests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/dc5235ce-691d-38b0 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/dc5235ce-691d-38b0 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  TabMeta:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: STANDUP
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; awk -F : 'length($1) > 4 {print $1}' /etc/passwd | head -8 | wc -l; true ; } > /var/tmp/data/72wCFNfkwNxt5phYuFL2BH
+            echo "checksum: $(cksum /var/tmp/data/72wCFNfkwNxt5phYuFL2BH | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '72wCFNfkwNxt5phYuFL2BH'
+  Launch_Suite5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/72wCFNfkwNxt5phYuFL2BH 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/72wCFNfkwNxt5phYuFL2BH 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  SD-HOLD-SW:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Exercise Tiny Ladder
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; mkdir -p ${TMPDIR:-/tmp}/eveningstory && cd ${TMPDIR:-/tmp}/eveningstory && touch otter dog cat && ls && cd - >/dev/null; true ; } > /var/tmp/data/SurgeVault
+            echo "checksum: $(cksum /var/tmp/data/SurgeVault | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'SurgeVault'
+  rip-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/SurgeVault 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/SurgeVault 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  table-2021-w04:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: The SKUs are green
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; function ext_of() { printf "%-${2:-20}s|\n" "$1"; }; ext_of mount; true ; } > /var/tmp/data/FVMkSOXPoo
+            echo "checksum: $(cksum /var/tmp/data/FVMkSOXPoo | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'FVMkSOXPoo'
+  tweak-metrics-reload:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/FVMkSOXPoo 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/FVMkSOXPoo 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  VMParser6:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Plan Heron
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'a b c' | cut -c1-8; true ; } > /var/tmp/data/28.07.2019
+            echo "checksum: $(cksum /var/tmp/data/28.07.2019 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '28.07.2019'
+  fire-up:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/28.07.2019 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/28.07.2019 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  C5-FF-78-2D-7A-6C:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: evaluation 202407
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; seq 36 >"/var/tmp/junk.log" && tail -n 3 "/var/tmp/junk.log"; true ; } > /var/tmp/data/139.15.72
+            echo "checksum: $(cksum /var/tmp/data/139.15.72 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '139.15.72'
+  check-nightly-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/139.15.72 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/139.15.72 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  ConvertTo-MyContract:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Keep the load profile as is
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; count_lines(){ [ -f "$1" ] && echo file || echo other; }; count_lines /etc; true ; } > /var/tmp/data/SKU79104
+            echo "checksum: $(cksum /var/tmp/data/SKU79104 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'SKU79104'
+  fix-3201:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/SKU79104 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/SKU79104 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  cDeprecated:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Chapter XII Rerouting Mesh Routes
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; awk '{print $1}' /etc/hosts |shuf -n 5; true ; } > /var/tmp/data/RedProxyEchoGuest
+            echo "checksum: $(cksum /var/tmp/data/RedProxyEchoGuest | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'RedProxyEchoGuest'
+  update-retry:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/RedProxyEchoGuest 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/RedProxyEchoGuest 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  blog_limit_helper_8:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Execute return with respect to the customs forms
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'yay!' | xargs; true ; } > /var/tmp/data/southbogbog
+            echo "checksum: $(cksum /var/tmp/data/southbogbog | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'southbogbog'
+  preview-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/southbogbog 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/southbogbog 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  IN-OUT-2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: We book the purchase orders here
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; if [ -k /tmp ]; then echo true; fi; true ; } > /var/tmp/data/bL
+            echo "checksum: $(cksum /var/tmp/data/bL | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'bL'
+  cf-x:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/bL 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/bL 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  p2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Bjorn to zip the inbox folder
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; echo "don't panic" | cksum; true ; } > /var/tmp/data/0D
+            echo "checksum: $(cksum /var/tmp/data/0D | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '0D'
+  DeploySuite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/0D 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/0D 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  m_pIcon:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Load world chunks for mobile
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; head /etc/os-release | tr -d '"' | sort; true ; } > /var/tmp/data/xx_aa0b85f8f04bd2
+            echo "checksum: $(cksum /var/tmp/data/xx_aa0b85f8f04bd2 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'xx_aa0b85f8f04bd2'
+  add-session:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/xx_aa0b85f8f04bd2 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/xx_aa0b85f8f04bd2 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  yolo:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: batch 4a47
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; uname -srm; true ; } > /var/tmp/data/qwx60aej
+            echo "checksum: $(cksum /var/tmp/data/qwx60aej | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'qwx60aej'
+  produce-staging-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/qwx60aej 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/qwx60aej 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  ms_arg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Wake the orphan jobs when convenient
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; find /usr/share -maxdepth 2 \( -name 'README*' -o -name '*.gz' \) -exec echo {} \; 2>/dev/null|sort|head -n 1; true ; } > /var/tmp/data/MATRIX_INDIGO_RIVER
+            echo "checksum: $(cksum /var/tmp/data/MATRIX_INDIGO_RIVER | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'MATRIX_INDIGO_RIVER'
+  sirius-plus:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/MATRIX_INDIGO_RIVER 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/MATRIX_INDIGO_RIVER 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  TempFunc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Straight after label the gel
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; nl /etc/login.defs | tail -n 6; true ; } > /var/tmp/data/IMG-00005591
+            echo "checksum: $(cksum /var/tmp/data/IMG-00005591 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'IMG-00005591'
+  assemble-staging-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/IMG-00005591 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/IMG-00005591 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  comment_cli:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Not warming the checkpoints today
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; awk -F ":" 'NR <= 5 { print $1 " uses " $7 }' /etc/passwd | wc -l; true ; } > /var/tmp/data/DNS.DNS-b65.RAM
+            echo "checksum: $(cksum /var/tmp/data/DNS.DNS-b65.RAM | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'DNS.DNS-b65.RAM'
+  all-greens:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/DNS.DNS-b65.RAM 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/DNS.DNS-b65.RAM 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  peN-dePth-LoCkeD:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: trace app 53
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; touch -d 'yesterday' "${TMPDIR:-/tmp}/contractSchool02.txt" && date -r "${TMPDIR:-/tmp}/contractSchool02.txt"; true ; } > /var/tmp/data/bond.vector.shard
+            echo "checksum: $(cksum /var/tmp/data/bond.vector.shard | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'bond.vector.shard'
+  q1-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/bond.vector.shard 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/bond.vector.shard 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+  cn-india:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Stabilise the credit notes and have done with it
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'yay!' | cut -d' ' -f1; true ; } > /var/tmp/data/2024-08-26T23-19
+            echo "checksum: $(cksum /var/tmp/data/2024-08-26T23-19 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '2024-08-26T23-19'
+  PROD_HOOK_3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Pre-fetch D
+          command: |
+            echo "$(( $(wc -w < /var/tmp/data/2024-08-26T23-19 2>/dev/null || echo 0) * 100 / ($(wc -l < /var/tmp/data/2024-08-26T23-19 2>/dev/null || echo 1) + 1) )) wpl*100"
+      - run:
+          name: Grab repository
+          command: git clone --depth 1 --quiet --no-single-branch --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Extract sources
+          command: tar --extract --file=ledger-02.tar
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          name: Cooldown
+          command: du -sh .
+      - run:
+          name: Package artifacts
+          command: sleep 15
+      - run:
+          command: $PWD/rotate-aggregator
+
+  navsByName:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Smoke test type checks 7bf75
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; cut -c1-5 /etc/passwd | head -2; true ; } > /var/tmp/data/qwx60aej
+            echo "checksum: $(cksum /var/tmp/data/qwx60aej | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'qwx60aej'
+  freeze-type:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Chapter Twelve Prep
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; gzip -c /etc/passwd >"/tmp/page-cluster.gz" && zcat "/tmp/page-cluster.gz" | head -n 3; true ; } > /var/tmp/data/4hvp5f
+            echo "checksum: $(cksum /var/tmp/data/4hvp5f | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '4hvp5f'
+  q22007:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Stand by for hot swap
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; tr -cs '[:alnum:]' '\n' </proc/cpuinfo | sed 's/^/- /'; true ; } > /var/tmp/data/RedProxyEchoGuest
+            echo "checksum: $(cksum /var/tmp/data/RedProxyEchoGuest | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'RedProxyEchoGuest'
+  rollbackchoose:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: T plus 1 min clear out the cache directory
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 3 -type f -name '*.d' -size -1k -group root -exec readlink -f "{}" ';' 2>/dev/null | awk -F/ '{print $NF}'; true ; } > /var/tmp/data/s6N1QpunBzY
+            echo "checksum: $(cksum /var/tmp/data/s6N1QpunBzY | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 's6N1QpunBzY'
+  temp-p:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Z10 SCAN CACHE DIRECTORY
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; echo -e '\x4e\x6b'; true ; } > /var/tmp/data/debug.log.26
+            echo "checksum: $(cksum /var/tmp/data/debug.log.26 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'debug.log.26'
+  IoT_INIT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Sync Status Nogo
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; for word in bear cat fox tiger goose eagle; do echo "$word"; done; true ; } > /var/tmp/data/2021-10-27T05-30
+            echo "checksum: $(cksum /var/tmp/data/2021-10-27T05-30 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '2021-10-27T05-30'
+  Bridge_71125:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Caramelize raw footage
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; cat /etc/os-release | cut -d= -f1 | pr -3 -t; true ; } > /var/tmp/data/139.15.72
+            echo "checksum: $(cksum /var/tmp/data/139.15.72 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - '139.15.72'
+  tooltip--xl:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/data
+      - run:
+          name: Operation Final Tunnel
+          command: |
+            mkdir -p /var/tmp/data
+            { set +o pipefail 2>/dev/null; test -O $HOME && echo "present" || echo "absent"; true ; } > /var/tmp/data/run_160
+            echo "checksum: $(cksum /var/tmp/data/run_160 | awk '{print $1}')"
+      - persist_to_workspace:
+          root: /var/tmp/data
+          paths:
+            - 'run_160'
+workflows:
+  main:
+    jobs:
+      - yolo
+      - navsByName:
+          requires:
+            - yolo
+      - produce-staging-regression-suite:
+          requires:
+            - navsByName
+      - checkbox--inline:
+          requires:
+            - navsByName
+      - freeze-type:
+          requires:
+            - checkbox--inline
+      - intergration:
+          requires:
+            - freeze-type
+      - cDeprecated:
+          requires:
+            - freeze-type
+      - q22007:
+          requires:
+            - cDeprecated
+      - update-retry:
+          requires:
+            - q22007
+      - j_old:
+          requires:
+            - q22007
+      - rollbackchoose:
+          requires:
+            - j_old
+      - brodcast-87:
+          requires:
+            - rollbackchoose
+      - New-Warning-Tiny:
+          requires:
+            - rollbackchoose
+      - temp-p:
+          requires:
+            - New-Warning-Tiny
+      - vb-old:
+          requires:
+            - temp-p
+      - q1:
+          requires:
+            - temp-p
+      - IoT_INIT:
+          requires:
+            - q1
+      - tweak-router-reload:
+          requires:
+            - IoT_INIT
+      - C5-FF-78-2D-7A-6C:
+          requires:
+            - IoT_INIT
+      - Bridge_71125:
+          requires:
+            - C5-FF-78-2D-7A-6C
+      - check-nightly-regression-suite:
+          requires:
+            - Bridge_71125
+      - matchAccountShipment:
+          requires:
+            - Bridge_71125
+      - tooltip--xl:
+          requires:
+            - matchAccountShipment
+      - jul15-smoke:
+          requires:
+            - tooltip--xl
+      - ms_arg
+      - sirius-plus:
+          requires:
+            - ms_arg
+      - LS-DUE-B:
+          requires:
+            - ms_arg
+      - tweak-session:
+          requires:
+            - LS-DUE-B
+      - full_protocol_mbps:
+          requires:
+            - LS-DUE-B
+      - ivan-ship:
+          requires:
+            - full_protocol_mbps
+      - panel--full:
+          requires:
+            - full_protocol_mbps
+      - blast-off:
+          requires:
+            - panel--full
+      - iMaxCommentService:
+          requires:
+            - panel--full
+      - ken-ci:
+          requires:
+            - iMaxCommentService
+      - cn-india:
+          requires:
+            - iMaxCommentService
+      - PROD_HOOK_3:
+          requires:
+            - cn-india
+      - blog_limit_helper_8:
+          requires:
+            - cn-india
+      - preview-build:
+          requires:
+            - blog_limit_helper_8
+      - error-save-icon-donut-robot:
+          requires:
+            - blog_limit_helper_8
+      - send-it:
+          requires:
+            - error-save-icon-donut-robot
+      - m_pIcon:
+          requires:
+            - error-save-icon-donut-robot
+      - add-session:
+          requires:
+            - m_pIcon
+      - TabMeta:
+          requires:
+            - m_pIcon
+      - Launch_Suite5:
+          requires:
+            - TabMeta
+      - TempFunc:
+          requires:
+            - TabMeta
+      - assemble-staging-integration-tests:
+          requires:
+            - TempFunc
+      - ConvertTo-MyContract:
+          requires:
+            - TempFunc
+      - fix-3201:
+          requires:
+            - ConvertTo-MyContract
+      - Span-Single-Kind:
+          requires:
+            - ConvertTo-MyContract
+      - india-8:
+          requires:
+            - Span-Single-Kind
+      - IN-OUT-2:
+          requires:
+            - Span-Single-Kind
+      - cf-x:
+          requires:
+            - IN-OUT-2
+      - table-2021-w04:
+          requires:
+            - IN-OUT-2
+      - tweak-metrics-reload:
+          requires:
+            - table-2021-w04
+      - CLUSTER_H_:
+          requires:
+            - table-2021-w04
+      - LaunchTests:
+          requires:
+            - CLUSTER_H_
+      - SD-HOLD-SW:
+          requires:
+            - CLUSTER_H_
+      - rip-it:
+          requires:
+            - SD-HOLD-SW
+      - jigsaw-tiger:
+          requires:
+            - SD-HOLD-SW
+      - bob-test:
+          requires:
+            - jigsaw-tiger
+      - VMParser6:
+          requires:
+            - jigsaw-tiger
+      - fire-up:
+          requires:
+            - VMParser6
+      - peN-dePth-LoCkeD:
+          requires:
+            - VMParser6
+      - q1-release:
+          requires:
+            - peN-dePth-LoCkeD
+      - comment_cli:
+          requires:
+            - peN-dePth-LoCkeD
+      - all-greens:
+          requires:
+            - comment_cli
+      - p2:
+          requires:
+            - comment_cli
+      - DeploySuite:
+          requires:
+            - p2
